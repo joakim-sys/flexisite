@@ -1,0 +1,27 @@
+<!-- ======= F.A.Q Section ======= -->
+<section id="faq" class="faq">
+  <div class="container">
+    <div class="section-title">
+      <h2>{{page.faq_title}}</h2>
+      <h3>{{page.faq_heading}}</h3>
+    </div>
+
+    <ul class="faq-list">
+      {% for faq in page.faqs.all %}
+      <li>
+        <div data-bs-toggle="collapse" class="collapsed question" href="#faq{{faq.id}}">
+          {{faq.question}}
+          <i class="bi bi-chevron-down icon-show"></i
+          ><i class="bi bi-chevron-up icon-close"></i>
+        </div>
+        <div id="faq{{faq.id}}" class="collapse" data-bs-parent=".faq-list">
+          <p>
+            {{faq.answer}}
+          </p>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+<!-- End F.A.Q Section -->

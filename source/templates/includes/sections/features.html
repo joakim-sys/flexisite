@@ -1,0 +1,22 @@
+{% load wagtailcore_tags %}
+
+<!-- ======= Features Section ======= -->
+<section id="features" class="features">
+  <div class="container">
+    <div class="row">
+      {% for feature in page.features.all %}
+      <div class="col-lg-3 col-md-4 col-6 col-6">
+        <div class="icon-box">
+          <i class="{{feature.icon}}" style="color: {% if feature.color %} {{feature.color}}; {% else %}#e80368;{% endif %} "></i>
+          {% if feature.link %}
+          <h3><a href="{% pageurl feature.link %}">{{feature.name}}</a></h3>
+          {% else %}
+          <h3>{{feature.name}}</h3>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<!-- End Features Section -->

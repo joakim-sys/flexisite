@@ -1,0 +1,36 @@
+<!-- ======= About Section ======= -->
+<section id="about" class="about">
+  <div class="container">
+    <div class="section-title">
+      <h2>{% if page.about_title %}{{page.about_title}}{% else %}About{% endif %}</h2>
+      <h3>
+        <span>
+            {% if page.about_heading %}{{page.about_heading}}{% else %}About Us{% endif %}
+        </span>
+        </h3>
+        {% if page.about_subheading %}
+        <p>{{page.about_subheading}}</p>
+         {% endif %}
+    </div>
+
+    <div class="row content">
+      <div class="col-lg-6">
+        <p>
+        {{page.about_intro}}
+        </p>
+        <ul>
+          {% for item in page.about_listed_services.all %}
+          <li>
+            <i class="ri-check-double-line"></i>{{item}}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-lg-6 pt-4 pt-lg-0">
+        <p>{{page.about_body}}</p>
+        <a href="{% if page.about_cta_link %}{{page.cta_link}}{% else %}#{% endif %}" class="btn-learn-more">{{page.about_cta_text}}</a>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End About Section -->

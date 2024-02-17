@@ -1,0 +1,17 @@
+{% load wagtailcore_tags %}
+
+<!-- ======= Cta Section ======= -->
+<section id="cta" class="cta">
+  <div class="container">
+    <div class="text-center">
+      <h3>{{page.cta_title}}</h3>
+      <p>{{page.cta_descr}}</p>
+      {% if page.cta_link %}
+      <a class="cta-btn" href="{% pageurl page.cta_link %}">{{page.cta_text}}</a>
+      {% else %}
+      <a class="cta-btn">{{page.cta_text}}</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+<!-- End Cta Section -->

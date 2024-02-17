@@ -1,0 +1,16 @@
+{% load wagtailcore_tags %}
+
+<!-- ======= Hero Section ======= -->
+<section id="hero">
+  <div class="hero-container">
+    <h3>{{page.hero_welcome_text}}</h3>
+    <h1>{{page.hero_heading}}</h1>
+    <h2>{{page.hero_subheading}}</h2>
+    <a
+      href="{% if page.hero_cta_link %}{% pageurl page.hero_cta_link %}{% else %}#about{% endif %}"
+      class="btn-get-started scrollto"
+      >{{page.hero_cta_text}}</a
+    >
+  </div>
+</section>
+<!-- End Hero -->
