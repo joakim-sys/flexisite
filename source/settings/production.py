@@ -1,6 +1,6 @@
 from .base import *
 import random
-
+import string
 
 DEBUG = False
 
