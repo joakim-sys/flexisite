@@ -1,29 +1,34 @@
 import os
+env_vars = os.environ.copy()
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
+if 'DJANGO_SECRET_KEY' in env_vars:
+    SECRET_KEY = env_vars["DJANGO_SECRET_KEY"]
+
+if "DJANGO_ALLOWED_HOSTS" in env_vars:
+    ALLOWED_HOSTS = env_vars["DJANGO_ALLOWED_HOSTS"].split(",")
+
 INSTALLED_APPS = [
-    'pricing',
-    'features',
-    'services',
-    'base',
-    'blog',
-
-    'wagtail.api.v2',
-    'wagtail.locales',
-    'wagtail.contrib.routable_page',
-    'wagtail.contrib.table_block',
-    'wagtail.contrib.search_promotions',
-    'wagtail.contrib.settings',
-    'wagtail.contrib.simple_translation',
-    'wagtail.contrib.styleguide',
-    'rest_framework',
-    'wagtailfontawesomesvg',
-    'debug_toolbar',
-    'django_extensions',
-    'django.contrib.sitemaps',
-
+    "pricing",
+    "features",
+    "services",
+    "base",
+    "blog",
+    "wagtail.api.v2",
+    "wagtail.locales",
+    "wagtail.contrib.routable_page",
+    "wagtail.contrib.table_block",
+    "wagtail.contrib.search_promotions",
+    "wagtail.contrib.settings",
+    "wagtail.contrib.simple_translation",
+    "wagtail.contrib.styleguide",
+    "rest_framework",
+    "wagtailfontawesomesvg",
+    "debug_toolbar",
+    "django_extensions",
+    "django.contrib.sitemaps",
     "home",
     "search",
     "wagtail.contrib.forms",
@@ -48,7 +53,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -57,7 +62,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
-
 ]
 
 ROOT_URLCONF = "source.urls"
@@ -75,7 +79,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                'wagtail.contrib.settings.context_processors.settings',
+                "wagtail.contrib.settings.context_processors.settings",
             ],
         },
     },
@@ -89,10 +93,24 @@ WSGI_APPLICATION = "source.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": env_vars["MYSQL_DATABASE"] if "MYSQL_DATABASE" in env_vars else "",
+        "USER": env_vars["MYSQL_USER"] if "MYSQL_USER" in env_vars else "",
+        "PASSWORD": env_vars["MYSQL_PASSWORD"] if "MYSQL_PASSWORD" in env_vars else "",
+        "HOST": env_vars["MYSQL_HOST"] if "MYSQL_HOST" in env_vars else "",
+        "PORT": env_vars["MYSQL_PORT"] if "MYSQL_PORT" in env_vars else "",
     }
 }
+
+# if "DATABASE_URL" in os.environ:
+#     DATABASES = {"default": dj_database_url.config(conn_max_age=500)}
+# else:
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.sqlite3",
+#             "NAME": os.path.join(BASE_DIR, "bakerydemodb"),
+#         }
+#     }
 
 
 # Password validation
@@ -154,20 +172,20 @@ MEDIA_URL = "/media/"
 
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = "source"
+# WAGTAIL_SITE_NAME = "source"
+WAGTAIL_SITE_NAME = env_vars["WAGTAIL_SITE_NAME"] if "WAGTAIL_SITE_NAME" in env_vars else ""
+
 
 # Search
 # https://docs.wagtail.org/en/stable/topics/search/backends.html
 WAGTAILSEARCH_BACKENDS = {
-    "default": {
-        "BACKEND": "wagtail.search.backends.database",
-        'INDEX': 'striker'
-    }
+    "default": {"BACKEND": "wagtail.search.backends.database", "INDEX": "striker"}
 }
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-WAGTAILADMIN_BASE_URL = "http://striker.pythonanywhere.com"
+# WAGTAILADMIN_BASE_URL = "http://striker.pythonanywhere.com"
+WAGTAILADMIN_BASE_URL = env_vars["BASE_URL"] if "BASE_URL" in env_vars else ""
 
 WAGTAIL_I18N_ENABLED = True
 
@@ -177,7 +195,7 @@ WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
     ("ar", "العربيّة"),
 ]
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Email Configuration
 EMAIL_HOST = "smtp.gmail.com"
