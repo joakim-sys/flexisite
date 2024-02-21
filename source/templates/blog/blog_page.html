@@ -1,0 +1,79 @@
+{% extends "base.html" %} {% load wagtailcore_tags navigation_tags wagtailimages_tags %}
+ 
+{% block content %}
+<!-- ======= Blog Single Section ======= -->
+<section id="blog" class="blog">
+  <div class="container" data-aos="fade-up">
+    <div class="row">
+      <div class="col-lg-8 entries">
+        <article class="entry entry-single">
+          <div class="entry-img">
+            {% image page.image fill-850x530 as blog_image %}
+            <img src="{{blog_image.url}}" alt="" class="img-fluid" />
+          </div>
+
+          <h2 class="entry-title">
+            <a href="{% pageurl page %}">{{page.title}}</a>
+          </h2>
+
+          <div class="entry-meta">
+            <ul>
+              <li class="d-flex align-items-center">
+                <i class="bi bi-person"></i>
+                {% for author in page.authors|slice:"1" %}
+                <a>{{author}}</a>
+                {% endfor %}
+              </li>
+              <li class="d-flex align-items-center">
+                <i class="bi bi-clock"></i>
+                <a 
+                  ><time datetime="2020-01-01">{{page.date_published}}</time></a
+                >
+              </li>
+              {% if post.get_comments %}
+              <li class="d-flex align-items-center">
+                <i class="bi bi-chat-dots"></i>
+                <a href="#">{{post.comments.count}}</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+
+          <div class="entry-content">{{page.body|safe}}</div>
+
+          <div class="entry-footer">
+            <i class="bi bi-folder"></i>
+            <ul class="cats">
+                {% for category in page.get_categories %}
+              <li><a href="{% pageurl page.get_parent %}categories/{{category.name}}">{{category.name}}</a></li>
+              {% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            </ul>
+
+            <i class="bi bi-tags"></i>
+            <ul class="tags">
+                {% for tag in tags %}
+              <li><a href="{{tag.url}}">{{tag}}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </article>
+        <!-- End blog entry -->
+
+        {% include "blog/includes/author-bio.html" %}
+        <!-- End blog author bio -->
+
+        {# Comments and Replies Functionality is unvailable at the moment. #}
+        {% comment %} {% include "blog/includes/comments.html" %} {% endcomment %}
+        <!-- End blog comments -->
+      </div>
+      <!-- End blog entries list -->
+
+      {% include "blog/includes/sidebar/sidebar.html" %}
+      <!-- End blog sidebar -->
+    </div>
+  </div>
+</section>
+<!-- End Blog Single Section -->
+
+{% endblock content %}

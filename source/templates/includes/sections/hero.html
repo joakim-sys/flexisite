@@ -1,6 +1,30 @@
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags wagtailimages_tags static %}
+<!--  -->
+{% block extra_css %}
+<!--  -->
+{% image page.hero_image fill-1920x1200 as hero_image %}
+{% image page.cta_image fill-1920x1200 as cta_image %}
+
+<style>
+  #hero {
+    width: 100%;
+    height: 100vh;
+    background: url("{{hero_image.url}}") top center;
+    background-size: cover;
+    position: relative;
+  }
+
+  .cta {
+  background: linear-gradient(rgba(2, 2, 2, 0.5), rgba(0, 0, 0, 0.8)), url("{{cta_image.url}}") center center;
+  background-size: cover;
+  padding: 60px 0;
+}
+
+</style>
+{% endblock extra_css %}
 
 <!-- ======= Hero Section ======= -->
+{% image page.hero_image fill-1920x1200 as hero_image %}
 <section id="hero">
   <div class="hero-container">
     <h3>{{page.hero_welcome_text}}</h3>

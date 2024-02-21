@@ -13,9 +13,9 @@
 
 {% else %}
 {% if request.path == '/' %}
-<li><a class="nav-link scrollto" href="#{{ menuitem.slug }}">{{menuitem.title}}</a></li>
+<li><a class="nav-link scrollto" href="{# #{{ menuitem.slug }} #} {% pageurl menuitem %}">{{menuitem.title}}</a></li>
 {% else %}
-<li><a class="nav-link" href="{% pageurl menuitem %}">{{menuitem.title}}</a></li>
+<li><a class="nav-link {% if menuitem.active %}active{% endif %}" href="{% pageurl menuitem %}">{{menuitem.title}}</a></li>
 {% endif %}
 
 {% endif %}

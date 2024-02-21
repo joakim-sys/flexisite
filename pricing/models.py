@@ -6,21 +6,47 @@ from wagtail.snippets.models import register_snippet
 
 
 class PricingTier(models.Model):
-    name = models.CharField(max_length=50)
-    price = models.PositiveSmallIntegerField()
-    is_special = models.BooleanField(default=False)
-    special_name = models.CharField(max_length=100, default="Recommended")
+    name = models.CharField(
+        max_length=50,
+        verbose_name="Tier Name",
+        help_text="Enter a name for this pricing tier.",
+    )
+    price = models.PositiveSmallIntegerField(
+        "Price", help_text="Enter the price for this tier"
+    )
+    is_special = models.BooleanField(
+        default=False,
+        verbose_name=" Special Tier",
+        help_text="Check this box if this tier is special or recommended.",
+    )
+    special_name = models.CharField(
+        max_length=100,
+        default="Recommended",
+        verbose_name="Special Tier Name",
+        help_text='Enter a name for the special tier, e.g., "Recommended"',
+    )
 
-    cta_text = models.CharField(max_length=100, default="Buy Now")
+    cta_text = models.CharField(
+        max_length=100,
+        default="Buy Now",
+        verbose_name=" CTA Text",
+        help_text="Enter the text for the Call-to-Action (CTA) button.",
+    )
     cta_link = models.ForeignKey(
         "wagtailcore.Page",
         on_delete=models.SET_NULL,
         related_name="+",
         blank=True,
         null=True,
+        verbose_name="CTA Link",
+        help_text="Choose a page to link to when the CTA button is clicked.",
     )
     pricing_features = ParentalManyToManyField(
-        "PricingFeature", related_name="+", blank=True
+        "PricingFeature",
+        related_name="+",
+        blank=True,
+        verbose_name="Pricing Features",
+        help_text="Select features associated with this pricing tier.",
     )
 
     page = ParentalKey(
@@ -53,10 +79,18 @@ class PricingTier(models.Model):
         return excluded_features
 
 
-@register_snippet
 class PricingFeature(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
+    name = models.CharField(
+        "Feature Name",
+        max_length=100,
+        help_text="Enter a name for this pricing feature.",
+    )
+    description = models.TextField(
+        "Feature Description",
+        help_text="Provide a description for this pricing feature.",
+        null=True,
+        blank=True,
+    )
     # tier = models.ForeignKey(PricingTier, related_name='pricing_features',null=True,blank=True,on_delete=models.CASCADE)
 
     def __str__(self):

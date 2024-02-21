@@ -1,4 +1,4 @@
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags navigation_tags %}
 
 <!-- ======= Footer ======= -->
 <footer id="footer">
@@ -8,61 +8,34 @@
         <div class="col-lg-3 col-md-6 footer-contact">
           <h3>{{settings.base.SiteSettings.logo}}</h3>
           <p>
-            <strong>Phone:</strong> {{settings.base.GenericSettings.phone}}<br />
-            <strong>Email:</strong> {{settings.base.GenericSettings.email}}<br />
+            <strong>Phone:</strong>
+            {{settings.base.GenericSettings.phone}}<br />
+            <strong>Email:</strong>
+            {{settings.base.GenericSettings.email}}<br />
           </p>
         </div>
 
         <div class="col-lg-2 col-md-6 footer-links">
-          <h4>Useful Links</h4>
+          <h4>{% get_footer_links_title %}</h4>
+
           <ul>
-            <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-            <li>
-              <i class="bx bx-chevron-right"></i> <a href="#">About us</a>
-            </li>
-            <li>
-              <i class="bx bx-chevron-right"></i> <a href="#">Services</a>
-            </li>
-            <li>
-              <i class="bx bx-chevron-right"></i>
-              <a href="#">Terms of service</a>
-            </li>
-            <li>
-              <i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a>
-            </li>
+            {% get_footer_links %}
           </ul>
         </div>
 
         <div class="col-lg-3 col-md-6 footer-links">
-          <h4>Our Services</h4>
+          <h4>{% get_footer_services_title %}</h4>
           <ul>
-            <li>
-              <i class="bx bx-chevron-right"></i> <a href="#">Web Design</a>
-            </li>
-            <li>
-              <i class="bx bx-chevron-right"></i>
-              <a href="#">Web Development</a>
-            </li>
-            <li>
-              <i class="bx bx-chevron-right"></i>
-              <a href="#">Product Management</a>
-            </li>
-            <li>
-              <i class="bx bx-chevron-right"></i> <a href="#">Marketing</a>
-            </li>
-            <li>
-              <i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a>
-            </li>
+            {% get_footer_services %}
           </ul>
         </div>
 
         <div class="col-lg-4 col-md-6 footer-newsletter">
-          <h4>Join Our Newsletter</h4>
+          <h4>{% get_footer_subscribe_email_title %}</h4>
           <p>
-            Tamen quem nulla quae legam multos aute sint culpa legam noster
-            magna
+            {% get_footer_subscribe_email_subtitle %}
           </p>
-          <form action="" method="post">
+          <form action="/" method="get">
             <input type="email" name="email" /><input
               type="submit"
               value="Subscribe"
@@ -76,7 +49,8 @@
   <div class="container d-md-flex py-4">
     <div class="me-md-auto text-center text-md-start">
       <div class="copyright">
-        &copy; Copyright <strong><span>{{settings.base.SiteSettings.logo}}</span></strong
+        &copy; Copyright
+        <strong><span>{{settings.base.SiteSettings.logo}}</span></strong
         >. All Rights Reserved
       </div>
       <div class="credits">
@@ -89,14 +63,34 @@
       </div>
     </div>
     <div class="social-links text-center text-md-right pt-3 pt-md-0">
-      <a href="{{settings.base.GenericSettings.twitter_url}}" class="twitter"><i class="bx bxl-twitter"></i></a>
-      <a href="{{settings.base.GenericSettings.facebook_url}}" class="facebook"><i class="bx bxl-facebook"></i></a>
-      <a href="{{settings.base.GenericSettings.instagram_url}}" class="instagram"><i class="bx bxl-instagram"></i></a>
-      {% comment %} <a href="{{settings.base.GenericSettings.skype_url}}" class="google-plus"><i class="bx bxl-skype"></i></a> {% endcomment %}
-      <a href="{{settings.base.GenericSettings.linkedin_url}}" class="linkedin"><i class="bx bxl-linkedin"></i></a>
-      <a href="{{settings.base.GenericSettings.tiktok_url}}" class="tiktok"><i class="bx bxl-tiktok"></i></a>
-      <a href="{{settings.base.GenericSettings.telegram_url}}" class="telegram"><i class="bx bxl-telegram"></i></a>
-      <a href="{{settings.base.GenericSettings.whatsapp_url}}" class="whatsapp"><i class="bx bxl-whatsapp"></i></a>
+      <a href="{{settings.base.GenericSettings.twitter_url}}" class="twitter"
+        ><i class="bx bxl-twitter"></i
+      ></a>
+      <a href="{{settings.base.GenericSettings.facebook_url}}" class="facebook"
+        ><i class="bx bxl-facebook"></i
+      ></a>
+      <a
+        href="{{settings.base.GenericSettings.instagram_url}}"
+        class="instagram"
+        ><i class="bx bxl-instagram"></i
+      ></a>
+      {% comment %}
+      <a href="{{settings.base.GenericSettings.skype_url}}" class="google-plus"
+        ><i class="bx bxl-skype"></i
+      ></a>
+      {% endcomment %}
+      <a href="{{settings.base.GenericSettings.linkedin_url}}" class="linkedin"
+        ><i class="bx bxl-linkedin"></i
+      ></a>
+      <a href="{{settings.base.GenericSettings.tiktok_url}}" class="tiktok"
+        ><i class="bx bxl-tiktok"></i
+      ></a>
+      <a href="{{settings.base.GenericSettings.telegram_url}}" class="telegram"
+        ><i class="bx bxl-telegram"></i
+      ></a>
+      <a href="{{settings.base.GenericSettings.whatsapp_url}}" class="whatsapp"
+        ><i class="bx bxl-whatsapp"></i
+      ></a>
     </div>
   </div>
 </footer>

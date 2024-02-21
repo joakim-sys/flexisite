@@ -1,5 +1,8 @@
 from django import template
 from wagtail.models import Page, Site
+from base.models import FooterInfo
+from home.models import HomePage
+from services.models import Service
 
 
 register = template.Library()
@@ -17,7 +20,7 @@ def has_menu_children(page):
 def has_children(page):
     return page.get_children().live().exists()
 
-
+@register.simple_tag(takes_context=False)
 def is_active(page, current_page):
     return current_page.url_path.startswith(page.url_path) if current_page else False
 
@@ -83,3 +86,62 @@ def breadcrumbs(context):
         "ancestors": ancestors,
         "request": context["request"],
     }
+
+
+@register.inclusion_tag("base/include/footer_links_title.txt", takes_context=True)
+def get_footer_links_title(context):
+    footer_links_title = context.get("footer_links_title", "")
+    if not footer_links_title:
+        instance = FooterInfo.objects.first()
+        footer_links_title = instance.links_title if instance else "Useful Links"
+    return {"footer_links_title": footer_links_title}
+
+
+@register.inclusion_tag("base/include/footer_services_title.txt", takes_context=True)
+def get_footer_services_title(context):
+    footer_services_title = context.get("footer_services_title", "")
+    if not footer_services_title:
+        instance = FooterInfo.objects.first()
+        footer_services_title = instance.services_title if instance else "Our Services"
+    return {"footer_services_title": footer_services_title}
+
+
+@register.inclusion_tag(
+    "base/include/footer_subscribe_email_title.txt", takes_context=True
+)
+def get_footer_subscribe_email_title(context):
+    footer_subscribe_email_title = context.get("footer_subscribe_email_title", "")
+    if not footer_subscribe_email_title:
+        instance = FooterInfo.objects.first()
+        footer_subscribe_email_title = (
+            instance.subscribe_email_title if instance else "Join Our Newsletter"
+        )
+    return {"footer_subscribe_email_title": footer_subscribe_email_title}
+
+
+@register.inclusion_tag(
+    "base/include/footer_subscribe_email_subtitle.txt", takes_context=True
+)
+def get_footer_subscribe_email_subtitle(context):
+    footer_subscribe_email_title = context.get("footer_subscribe_email_subtitle", "")
+    if not footer_subscribe_email_title:
+        instance = FooterInfo.objects.first()
+        footer_subscribe_email_subtitle = (
+            instance.subscribe_email_subtitle
+            if instance
+            else "Stay updated on the exlusive list of events that unfold"
+        )
+    return {"footer_subscribe_email_subtitle": footer_subscribe_email_subtitle}
+
+
+@register.inclusion_tag("base/include/footer_links.html", takes_context=True)
+def get_footer_links(context):
+    homepage = HomePage.objects.first()
+    children = homepage.get_children().live()
+    return {"links": children}
+
+
+@register.inclusion_tag("base/include/footer_services.html", takes_context=True)
+def get_footer_services(context):
+    services = Service.objects.all()
+    return {"services": services}

@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.views import generic
+from .models import Category
 
-# Create your views here.
+class CategoricalView(generic.ListView):
+    model = Category
+    template_name = 'blog/categories.html'
+    context_object_name = 'categories'

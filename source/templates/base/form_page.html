@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+<!--  -->
+{% load wagtailcore_tags wagtailimages_tags navigation_tags %}
+
+<!--  -->
+{% block content %}
+<section>
+  <div class="container">
+    <div class="section-title">
+      <h2>{{page.title}}</h2>
+      <h3></h3>
+      <p>{{page.introduction}}</p>
+    </div>
+
+    <div class="row content">
+      <div class="col-lg-10">
+        <p>{{page.body}}</p>
+      </div>
+      <div class="col-lg-6 pt-4 pt-lg-0"></div>
+    </div>
+
+    <div class="row-content">
+        <div class="col-lg-8">
+            <form action="{% pageurl page %}" method="POST">
+                {% csrf_token %}
+                {% if form.subject.errors %}
+                <ol>
+                    {% for error in form.subject.errors %}
+                        <li><strong>{{ error|escape }}</strong></li>
+                    {% endfor %}
+                </ol>
+                {% endif %}
+                {% for field in form %}
+                <div class="form-group" aria-required="{% if field.field.required %}true{% else %}false{% endif %}">
+
+                    {{ field.label_tag }}{% if field.field.required %}<span class="required">*</span>{% endif %}
+
+                    {% if field.help_text %}
+                        <p class="help">{{ field.help_text }}</p>
+                    {% endif %}
+
+                    {{ field }}
+            {% endfor %}
+            <input type="submit" class="btn btn-danger" value="Submit"/>
+
+            </form>
+        </div>
+    </div>
+
+  </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,15 @@
+{% load wagtailcore_tags %}
+
+<h3 class="sidebar-title">Categories</h3>
+<div class="sidebar-item categories">
+  <ul>
+    {% for category in categories %}
+    <li>
+      <a href="{{category.url}}">
+        {{category.name|capfirst}}
+        <span>({{category.posts.count}})</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
