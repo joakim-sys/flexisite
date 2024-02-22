@@ -1,4 +1,6 @@
 import os
+import dj_database_url
+
 env_vars = os.environ.copy()
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -206,3 +208,8 @@ EMAIL_HOST_PASSWORD = "zgap njcr zdzg lnzi"
 EMAIL_PORT = "587"
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"  # new
+
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]

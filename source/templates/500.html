@@ -1,13 +1,20 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-    <head>
-        <meta charset="utf-8" />
-        <title>Internal server error</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-    </head>
-    <body>
-        <h1>Internal server error</h1>
+{% extends "base.html" %}
+<!--  -->
+{% block title %}Internal server Error{% endblock %}
+<!--  -->
+{% block body_class %}template-500{% endblock %}
 
-        <h2>Sorry, there seems to be an error. Please try again soon.</h2>
-    </body>
-</html>
+<!--  -->
+{% block content %}
+
+<section id="about" class="about">
+  <div class="container">
+    <div class="section-title">
+      <h2>500 Error</h2>
+      <h3><span>Internal server Error</span></h3>
+      <p>Sorry, there seems to be an error. Please try again soon</p>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

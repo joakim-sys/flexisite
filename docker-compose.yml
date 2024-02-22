@@ -1,6 +1,6 @@
 services:
   db:
-    image: mysql:8.0.29 # version in use on pythonanywhere
+    image: mysql:8.0.29
     command: --default-authentication-plugin=mysql_native_password
     env_file:
       - .env
