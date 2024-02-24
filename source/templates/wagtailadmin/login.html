@@ -1,0 +1,23 @@
+{% extends "wagtailadmin/login.html" %}
+
+{% block branding_login %}
+
+{% with login_text=settings.base.SiteSettings.branding_login %}
+
+{% if login_text %}
+{{login_text}}
+{% else %}
+Sign in
+{% endif %}
+
+{% endwith %}
+
+{% endblock %}
+
+
+{% block above_login %}
+ USERNAME: <b>demousername</b>  PASS: <b>demouserpass</b> <br>
+Access the administration panel using the login credentials above, or <a href="/">browse the website.</a>
+{% endblock %} 
+
+<!-- {% block below_login %}{% endblock %} -->

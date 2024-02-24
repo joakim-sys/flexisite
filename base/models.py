@@ -74,6 +74,8 @@ class FormPage(AbstractEmailForm):
         BaseStreamBlock(),
         use_json_field=True,
         verbose_name="Page Body",
+        null=True,
+        blank=True,
         help_text="Compose the main content for this form page using various content blocks.",
     )
 
@@ -131,29 +133,65 @@ class FooterInfo(models.Model):
         verbose_name = "Footer Information"
         verbose_name_plural = "Footer Information"
 
+    def __str__(self):
+        return 'Footer Information'
+    
 
 @register_setting
 class SiteSettings(BaseSiteSetting):
     logo = models.CharField(
-        verbose_name="Logo Text",
+        verbose_name="Site Logo",
         max_length=20,
-        help_text="Enter the text for the website's logo. This is the displayed logo text.",
-        default="Buzzy",
+        help_text="Enter the text or name for the site logo. This text will be displayed as the logo in the header and footer.",
+        default="FlexiSite",
+    )
+    branding_title = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+        default="FlexiSite",
+        verbose_name="Site Title",
+        help_text='Enter the title to be displayed in the title tag of the website. If left blank, the default value is "FlexiSite."',
+    )
+    # branding_favicon = models.ForeignKey(
+    #     "wagtailimages.Image",
+    #     related_name="+",
+    #     blank=True,
+    #     null=True,
+    #     on_delete=models.SET_NULL,
+    #     verbose_name="Favicon",
+    #     help_text="Upload an image (png or ico) to be used as the website favicon. This image will appear in the browser tab.",
+    # )
+    branding_welcome = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        default="Welcome to FlexiSite CMS",
+        verbose_name="Welcome Text",
+        help_text='Enter the welcome text to be displayed on the admin home page. If left blank, the default is "Welcome to FlexiSite CMS."',
+    )
+    branding_login = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        default="Sign in to FlexiSite",
+        verbose_name="Login Text",
+        help_text='Enter the text to be displayed on the login page. If left blank, the default is "Sign in to FlexiSite."',
     )
 
 
 @register_setting
 class GenericSettings(ClusterableModel, BaseGenericSetting):
-    twitter_url = models.URLField('Twitter URL',blank=True, null=True)
-    facebook_url = models.URLField('Facebook URL',blank=True, null=True)
-    instagram_url = models.URLField('Instagram URL',blank=True, null=True)
-    tiktok_url = models.URLField('Tiktok URL',blank=True, null=True)
-    whatsapp_url = models.URLField('WhatsApp Business URL',blank=True, null=True)
-    telegram_url = models.URLField('Telegram URL',blank=True, null=True)
-    linkedin_url = models.URLField('LinkedIn URL',blank=True, null=True)
+    twitter_url = models.URLField("Twitter URL", blank=True, null=True)
+    facebook_url = models.URLField("Facebook URL", blank=True, null=True)
+    instagram_url = models.URLField("Instagram URL", blank=True, null=True)
+    tiktok_url = models.URLField("Tiktok URL", blank=True, null=True)
+    whatsapp_url = models.URLField("WhatsApp Business URL", blank=True, null=True)
+    telegram_url = models.URLField("Telegram URL", blank=True, null=True)
+    linkedin_url = models.URLField("LinkedIn URL", blank=True, null=True)
 
-    email = models.CharField('Contact Email',max_length=100, blank=True, null=True)
-    phone = models.CharField('Contact Phone',max_length=100, blank=True, null=True)
+    email = models.CharField("Contact Email", max_length=100, blank=True, null=True)
+    phone = models.CharField("Contact Phone", max_length=100, blank=True, null=True)
 
     panels = [
         MultiFieldPanel(

@@ -1,36 +1,81 @@
+{% with title=page.about_title heading=page.about_heading subheading=page.about_subheading intro=page.about_intro listing=page.about_listed_services.all body=page.about_body cta_link=page.about_cta_link cta_text=page.about_cta_text %}
+
 <!-- ======= About Section ======= -->
 <section id="about" class="about">
   <div class="container">
     <div class="section-title">
-      <h2>{% if page.about_title %}{{page.about_title}}{% else %}About{% endif %}</h2>
-      <h3>
-        <span>
-            {% if page.about_heading %}{{page.about_heading}}{% else %}About Us{% endif %}
-        </span>
-        </h3>
-        {% if page.about_subheading %}
-        <p>{{page.about_subheading}}</p>
-         {% endif %}
+      <h2>{% if title %}{{title}}{% else %}About{% endif %}</h2>
+      
+      {% if heading %} <h3>{{heading}}</h3> {% else %} <h3>About <span>FlexiSite</span> CMS </h3> {% endif %}
+
+      {% if subheading %}
+        <p>{{subheading}}</p>
+        {% else %}
+       <p>This template empowers easy customization of hero, about, services, blog, pricing & more. Built for flexibility & editors' joy.</p> 
+      {% endif %}
     </div>
 
     <div class="row content">
       <div class="col-lg-6">
         <p>
-        {{page.about_intro}}
+          {% if intro %}
+          {{intro}}
+          {% else %}
+          Empower content editors with FlexiSite, a Wagtail-based Bootstrap template. Unparalleled customization, user-friendly control, and a modern design for seamless marketing.
+          {% endif %}
         </p>
+        {% if listing %}
         <ul>
-          {% for item in page.about_listed_services.all %}
+          {% for item in listing %}
           <li>
             <i class="ri-check-double-line"></i>{{item}}
           </li>
           {% endfor %}
         </ul>
+        {% else %}
+
+        <ul>
+          <li>
+            <i class="ri-check-double-line"></i>
+            Unparalleled Customization for Hero, About, Services, Features, CTA, Pricing, FAQ, and Contact
+          </li>
+          <li>
+            <i class="ri-check-double-line"></i>
+            Blogging Feature with Posts, Authors, and Categories
+          </li>
+          <li>
+            <i class="ri-check-double-line"></i>
+            Snippets for Managing Pricing Models and Features
+          </li>
+          <li>
+            <i class="ri-check-double-line"></i>
+            Website-wide Settings Customization (Name, Logo)
+          </li>
+          <li>
+            <i class="ri-check-double-line"></i>
+            Personalization of Page Titles, Headers, Footer Information, and Text Content
+          </li>
+        </ul>
+        {% endif %}
       </div>
       <div class="col-lg-6 pt-4 pt-lg-0">
-        <p>{{page.about_body}}</p>
-        <a href="{% if page.about_cta_link %}{{page.cta_link}}{% else %}#{% endif %}" class="btn-learn-more">{{page.about_cta_text}}</a>
+        <p>
+           {% if body %}
+           {{body}}
+           {% else %}
+           FlexiSite is a Wagtail-based marketing template designed for ultimate flexibility and user-friendly customization.
+            Content editors, utilizing the Wagtail admin interface, can effortlessly tailor every aspect – from hero sections
+             to pricing models. The standout feature lies in giving editors unparalleled control over page elements, including
+              headers, footers, and navigation menus. Icons, customizable forms, and a blogging feature add visual appeal and
+               functionality. Snippets manage pricing models, and website-wide settings, including name and logo, can be
+                personalized. Prioritize user experience with FlexiSite, offering a seamless blend of control and modern design.           
+           {% endif %}
+        </p>
+
+        <a href="{% if cta_link %}{{cta_link}}{% else %}#{% endif %}" class="btn-learn-more">{% if cta_text %}{{cta_text}}{% else %}Learn More{% endif %}</a>
       </div>
     </div>
   </div>
 </section>
 <!-- End About Section -->
+{% endwith %}

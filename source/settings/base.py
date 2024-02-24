@@ -1,16 +1,16 @@
 import os
 import dj_database_url
 
-env_vars = os.environ.copy()
-
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
-if 'DJANGO_SECRET_KEY' in env_vars:
-    SECRET_KEY = env_vars["DJANGO_SECRET_KEY"]
 
-if "DJANGO_ALLOWED_HOSTS" in env_vars:
-    ALLOWED_HOSTS = env_vars["DJANGO_ALLOWED_HOSTS"].split(",")
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = "django-insecure-c!7+$0(%4zaob^y+!8=vcgpl*0$cd4+d&@x27_gn#h%*c+#%&4"
+
+DEVELOPMENT_MODE = int(os.environ.get("DEVELOPMENT_MODE", "1"))
+
+ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "pricing",
@@ -18,6 +18,10 @@ INSTALLED_APPS = [
     "services",
     "base",
     "blog",
+
+    'crispy_forms',
+    'crispy_bootstrap5',
+
     "wagtail.api.v2",
     "wagtail.locales",
     "wagtail.contrib.routable_page",
@@ -93,27 +97,29 @@ WSGI_APPLICATION = "source.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": env_vars["MYSQL_DATABASE"] if "MYSQL_DATABASE" in env_vars else "",
-        "USER": env_vars["MYSQL_USER"] if "MYSQL_USER" in env_vars else "",
-        "PASSWORD": env_vars["MYSQL_PASSWORD"] if "MYSQL_PASSWORD" in env_vars else "",
-        "HOST": env_vars["MYSQL_HOST"] if "MYSQL_HOST" in env_vars else "",
-        "PORT": env_vars["MYSQL_PORT"] if "MYSQL_PORT" in env_vars else "",
+if DEVELOPMENT_MODE:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "bakerydemodb"),
+        }
     }
-}
 
-# if "DATABASE_URL" in os.environ:
-#     DATABASES = {"default": dj_database_url.config(conn_max_age=500)}
-# else:
-#     DATABASES = {
-#         "default": {
-#             "ENGINE": "django.db.backends.sqlite3",
-#             "NAME": os.path.join(BASE_DIR, "bakerydemodb"),
-#         }
-#     }
+else:
+    if "DATABASE_URL" in os.environ:
+        DATABASES = {"default": dj_database_url.config(conn_max_age=500)}
+    else:
 
+        DATABASES = {
+            "default": {
+                "ENGINE": "django.db.backends.mysql",
+                "NAME": os.environ.get("MYSQL_DATABASE", ""),
+                "USER": os.environ.get("MYSQL_USER", ""),
+                "PASSWORD": os.environ.get("MYSQL_PASSWORD", ""),
+                "HOST": os.environ.get("MYSQL_HOST", ""),
+                "PORT": os.environ.get("MYSQL_PORT", ""),
+            }
+        }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -174,20 +180,13 @@ MEDIA_URL = "/media/"
 
 # Wagtail settings
 
-# WAGTAIL_SITE_NAME = "source"
-WAGTAIL_SITE_NAME = env_vars["WAGTAIL_SITE_NAME"] if "WAGTAIL_SITE_NAME" in env_vars else ""
-
+WAGTAIL_SITE_NAME = os.environ.get('WAGTAIL_SITE_NAME','flexisite')
 
 # Search
 # https://docs.wagtail.org/en/stable/topics/search/backends.html
 WAGTAILSEARCH_BACKENDS = {
     "default": {"BACKEND": "wagtail.search.backends.database", "INDEX": "striker"}
 }
-
-# Base URL to use when referring to full URLs within the Wagtail admin backend -
-# e.g. in notification emails. Don't include '/admin' or a trailing slash
-# WAGTAILADMIN_BASE_URL = "http://striker.pythonanywhere.com"
-WAGTAILADMIN_BASE_URL = env_vars["BASE_URL"] if "BASE_URL" in env_vars else ""
 
 WAGTAIL_I18N_ENABLED = True
 
@@ -201,15 +200,18 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Email Configuration
 EMAIL_HOST = "smtp.gmail.com"
-# EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-# EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-EMAIL_HOST_USER = "templatevoyage@gmail.com"
-EMAIL_HOST_PASSWORD = "zgap njcr zdzg lnzi"
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = "587"
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"  # new
 
 
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
+# INTERNAL_IPS = [
+#     "127.0.0.1",
+# ]
+
+
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"

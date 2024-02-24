@@ -12,6 +12,7 @@
     <!-- End sidebar categories-->
 
 
+    {% if latest_posts %}
     <h3 class="sidebar-title">Recent Posts</h3>
     <div class="sidebar-item recent-posts">
     
@@ -20,9 +21,10 @@
     {% endfor %}
 
     </div>
+    {% endif %}
     <!-- End sidebar recent posts-->
 
-    {% if tags %}
+    {% if all_tags %}
     {% include "blog/includes/sidebar/tags.html" %}
     {% endif %}
 

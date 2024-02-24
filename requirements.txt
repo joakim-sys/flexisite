@@ -7,10 +7,12 @@ certifi==2023.11.17
 charset-normalizer==3.3.2
 click==8.1.7
 colorama==0.4.6
+crispy-bootstrap5==2023.10
 curlylint==0.13.1
 defusedxml==0.7.1
 dj-database-url==2.1.0
 Django==4.2.9
+django-crispy-forms==2.1
 django-csp==3.7
 django-debug-toolbar==4.2.0
 django-dotenv==1.4.2
@@ -36,6 +38,7 @@ pathspec==0.12.1
 pillow==10.2.0
 pillow-heif==0.14.0
 platformdirs==4.1.0
+python-dotenv==1.0.1
 pytz==2023.3.post1
 requests==2.31.0
 ruff==0.0.290
@@ -50,4 +53,5 @@ urllib3==2.1.0
 wagtail==5.2.2
 wagtail-font-awesome-svg==1.0.1
 webencodings==0.5.1
+whitenoise==6.6.0
 Willow==1.6.3

@@ -11,10 +11,20 @@
       {% endif %}
   <div>
     <h4>{{author}}</h4>
+    {% with twitter=author.twitter fb=author.facebook ig=author.instagram %}
     <div class="social-links">
+      {% if twitter %}
       <a href="{{author.twitter}}"><i class="bi bi-twitter"></i></a>
+      {% endif %}
+      
+      {% if fb %}
       <a href="{{author.facebook}}"><i class="bi bi-facebook"></i></a>
+      {% endif %}
+      
+      {% if ig %}
       <a href="{{author.instagram}}"><i class="biu bi-instagram"></i></a>
+      {% endif %}
+      {% endwith %}
     </div>
     <p>{{author.bio}}</p>
   </div>

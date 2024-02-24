@@ -1,10 +1,27 @@
+{% with title=page.contact_title heading=page.contact_heading subheading=page.contact_subheading email=settings.base.GenericSettings.email phone=settings.base.GenericSettings.phone %}
 <!-- ======= Contact Section ======= -->
 <section id="contact" class="contact">
   <div class="container">
     <div class="section-title">
-      <h2>{{page.contact_title}}</h2>
-      <h3>{{page.contact_heading}}</h3>
-      <p>{{page.contact_subheading}}</p>
+      <h2>
+        {% if title %}{{title}}{% else %}Contact{% endif %}
+      </h2>
+      <h3>
+        {% if heading %}
+        {{heading}}
+        {% else %}
+        <span>Connect</span> with Us
+        {% endif %}
+      </h3>
+      <p>
+        {% if subheading %}
+        {{subheading}}
+        {% else %}
+        Whether you have a project in mind, a question for our team, or simply want to learn more,
+         we're here to connect. We value open communication and collaboration, so feel free to
+          reach out and start the conversation.
+        {% endif %}
+      </p>
     </div>
 
     <div>
@@ -32,13 +49,25 @@
           <div class="email">
             <i class="bi bi-envelope"></i>
             <h4>Email:</h4>
-            <p>{{settings.base.GenericSettings.email}}</p>
+            <p>
+              {% if email %}
+              {{email}}
+              {% else %}
+              marvycode@gmail.com
+              {% endif %}
+            </p>
           </div>
 
           <div class="phone">
             <i class="bi bi-phone"></i>
             <h4>Call:</h4>
-            <p>{{settings.base.GenericSettings.phone}}</p>
+            <p>
+              {% if phone %}
+              {{phone}}
+              {% else %}
+              xxxxxxxxxxxx
+              {% endif %}
+            </p>
           </div>
         </div>
       </div>
@@ -102,3 +131,4 @@
   </div>
 </section>
 <!-- End Contact Section -->
+{% endwith %}

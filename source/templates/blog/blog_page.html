@@ -1,8 +1,10 @@
 {% extends "base.html" %} {% load wagtailcore_tags navigation_tags wagtailimages_tags %}
  
 {% block content %}
+{% with image=page.image title=page.title authors=page.authors date=page.date_published body=page.body categories=page.get_categories %}
 <!-- ======= Blog Single Section ======= -->
-<section id="blog" class="blog">
+<section id="blog" class="blog"> 
+  {% if page.title %}
   <div class="container" data-aos="fade-up">
     <div class="row">
       <div class="col-lg-8 entries">
@@ -18,18 +20,23 @@
 
           <div class="entry-meta">
             <ul>
+              {% if page.authors %}
               <li class="d-flex align-items-center">
                 <i class="bi bi-person"></i>
                 {% for author in page.authors|slice:"1" %}
                 <a>{{author}}</a>
                 {% endfor %}
               </li>
+              {% endif %}
+
+              {% if page.date_published %}
               <li class="d-flex align-items-center">
                 <i class="bi bi-clock"></i>
                 <a 
                   ><time datetime="2020-01-01">{{page.date_published}}</time></a
                 >
               </li>
+              {% endif %}
               {% if post.get_comments %}
               <li class="d-flex align-items-center">
                 <i class="bi bi-chat-dots"></i>
@@ -42,25 +49,31 @@
           <div class="entry-content">{{page.body|safe}}</div>
 
           <div class="entry-footer">
+            {% if page.categories %}
             <i class="bi bi-folder"></i>
             <ul class="cats">
-                {% for category in page.get_categories %}
+                {% for category in page.categories %}
               <li><a href="{% pageurl page.get_parent %}categories/{{category.name}}">{{category.name}}</a></li>
               {% if not forloop.last %}, {% endif %}
               {% endfor %}
             </ul>
+            {% endif %}
 
+            {% if page.get_tags %}
             <i class="bi bi-tags"></i>
             <ul class="tags">
-                {% for tag in tags %}
+                {% for tag in page.get_tags %}
               <li><a href="{{tag.url}}">{{tag}}</a></li>
               {% endfor %}
             </ul>
+            {% endif %}
           </div>
         </article>
         <!-- End blog entry -->
 
+        {% if author %}
         {% include "blog/includes/author-bio.html" %}
+        {% endif %}
         <!-- End blog author bio -->
 
         {# Comments and Replies Functionality is unvailable at the moment. #}
@@ -73,7 +86,20 @@
       <!-- End blog sidebar -->
     </div>
   </div>
+  {% else %}
+  {# If there are no posts #}
+<div class="section-title">
+  <h2>Blog Entry</h2>
+  <h3>
+    <span>
+        {% comment %}  {% endcomment %}
+    </span>
+    </h3>
+    <p>Create an entry</p>
+</div>
+
+  {% endif %}
 </section>
 <!-- End Blog Single Section -->
-
+{% endwith %}
 {% endblock content %}

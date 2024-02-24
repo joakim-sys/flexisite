@@ -364,6 +364,19 @@ class HomePage(Page):
             heading="F.A.Q Section",
             help_text="Customize the content for the Frequently Asked Questions (F.A.Q) section. Include a title, heading, subheading, and manage frequently asked questions.",
         ),
+
+        # ***************** ContactUs Section *************************
+        MultiFieldPanel(
+            [
+                FieldPanel("contact_title"),
+                FieldPanel("contact_heading"),
+                FieldPanel("contact_subheading"),
+            ],
+            heading="Contact Us Section",
+            help_text="Customize the content for the Contact section. Include a title, heading, subheading. The form is hardcoded within the template for now.",
+        ),
+
+
     ]
     page_description = "The homepage serves as the landing page for the website. Customize it to showcase key content, introduce visitors to your site, and provide an engaging starting point for their journey."
 

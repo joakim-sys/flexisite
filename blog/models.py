@@ -12,6 +12,7 @@ from wagtail.admin.panels import (
     FieldPanel,
     FieldRowPanel,
     MultipleChooserPanel,
+    InlinePanel,
 )
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.search import index
@@ -21,6 +22,17 @@ from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.contrib.taggit import ClusterTaggableManager
 
 from base.blocks import BaseStreamBlock
+
+
+class BlogCategoryRelationship(Orderable, models.Model):
+    page = ParentalKey(
+        "BlogPage", related_name="blog_category_relationship", on_delete=models.CASCADE
+    )
+    category = models.ForeignKey(
+        "Category", related_name="category_blog_relationship", on_delete=models.CASCADE
+    )
+
+    panels = [FieldPanel("category")]
 
 
 class BlogAuthorRelationship(Orderable, models.Model):
@@ -78,13 +90,13 @@ class BlogPage(Page):
     date_published = models.DateField(
         blank=True, null=True, help_text="The date when the post was published."
     )
-    categories = ParentalManyToManyField(
-        "Category",
-        verbose_name="Categories",
-        blank=True,
-        related_name="posts",
-        help_text="Select categories that best describe the content of the post.",
-    )
+    # categories = ParentalManyToManyField(
+    #     "Category",
+    #     verbose_name="Categories",
+    #     blank=True,
+    #     related_name="posts",
+    #     help_text="Select categories that best describe the content of the post.",
+    # )
 
     search_fields = Page.search_fields + [
         index.SearchField("title"),
@@ -112,7 +124,16 @@ class BlogPage(Page):
         FieldPanel("image"),
         FieldPanel("subtitle"),
         FieldPanel("body"),
-        FieldPanel("categories", widget=forms.CheckboxSelectMultiple),
+        # FieldPanel("categories", widget=forms.CheckboxSelectMultiple),
+        MultipleChooserPanel(
+            "blog_category_relationship",
+            chooser_field_name="category",
+            heading="Categories",
+            label="Category",
+            panels=None,
+            max_num=2,
+            help_text="Select categories that best describe the content of the post.",
+        ),
         FieldPanel("tags"),
     ]
 
@@ -131,8 +152,11 @@ class BlogPage(Page):
         ]
 
     @property
-    def get_categories(self):
-        cats = self.categories.all()
+    def categories(self):
+        cats = [
+            n.category
+            for n in self.blog_category_relationship.all().select_related("category")
+        ]
         base_url = self.get_parent().url
         for cat in cats:
             cat.url = f"{base_url}categories/{cat.name}"
@@ -153,15 +177,22 @@ class BlogPage(Page):
             tag.url = f"{base_url}tags/{tag.slug}/"
         return tags
 
+    def get_all_categories(self):
+        categories = Category.objects.all()
+        base_url = self.get_parent().url
+        for category in categories:
+            category.url = f"{base_url}categories/{category.name}"
+        return categories
+
+
     def get_context(self, request):
         context = super(BlogPage, self).get_context(request)
-        context["child_categories"] = self.get_categories
-        context["categories"] = self.get_all_categories()
         context["author"] = self.get_author()
-        context["tags"] = self.get_all_tags()
+        context["all_tags"] = self.get_all_tags()
         context["latest_posts"] = (
             BlogPage.objects.live().exclude(id=self.id).order_by("-date_published")
         )
+        context["categories"] = self.get_all_categories()
         return context
 
     def get_all_tags(self):
@@ -171,13 +202,6 @@ class BlogPage(Page):
             tags += post.get_tags
         return sorted(tags)
 
-    def get_all_categories(self):
-        cats = Category.objects.all()
-        base_url = self.get_parent().url
-        for cat in cats:
-            cat.url = f"{base_url}categories/{cat.name}"
-        return cats
-        return cats
 
     parent_page_types = ["BlogListing"]
     subpage_types = []
@@ -207,6 +231,7 @@ class BlogListing(RoutablePageMixin, Page):
         context["posts"] = self.paginate(request, posts)
         context["latest_posts"] = self.get_posts()[:5]
         context["tags"] = self.get_child_tags()
+        context["all_tags"] = self.get_all_tags()
         context["categories"] = self.get_all_categories()
         return context
 
@@ -265,6 +290,13 @@ class BlogListing(RoutablePageMixin, Page):
         }
         return render(request, "blog/blog_listing.html", context)
 
+    def get_all_tags(self):
+        posts = BlogPage.objects.all()
+        tags = []
+        for post in posts:
+            tags += post.get_tags
+        return sorted(tags)
+
     def get_latest_posts(self):
         latest_posts = (
             BlogPage.objects.live().exclude(id=self.id).order_by("-date_published")
@@ -280,10 +312,21 @@ class BlogListing(RoutablePageMixin, Page):
             posts = posts.filter(tags=tag)
         return posts
 
+    # def get_posts_by_category(self, category=None):
+    #     posts = BlogPage.objects.live().descendant_of(self).order_by("-date_published")
+    #     if category:
+    #         posts = category.posts.all()
+    #     return posts
+
     def get_posts_by_category(self, category=None):
         posts = BlogPage.objects.live().descendant_of(self).order_by("-date_published")
         if category:
-            posts = category.posts.all()
+            posts = [
+                n.page.specific
+                for n in BlogCategoryRelationship.objects.filter(
+                    category__in=[category]
+                )
+            ]
         return posts
 
     def get_child_tags(self):
@@ -323,8 +366,14 @@ class Category(models.Model):
 
     panels = [FieldPanel("name")]
 
+    @property
+    def pages_count(self):
+        pages = [n.page for n in self.category_blog_relationship.all()]
+        return len(pages)
+
     def __str__(self):
-        return self.name.capitalize()
+        # return self.name.capitalize()
+        return self.name
 
     class Meta:
         verbose_name_plural = "Categories"
@@ -347,19 +396,19 @@ class Author(models.Model):
     )
 
     twitter_url = models.URLField(
-        'X URL',
+        "X URL",
         blank=True,
         null=True,
         help_text="Optionally, enter the Twitter URL of the author.",
     )
     facebook_url = models.URLField(
-        'Facebook URL',
+        "Facebook URL",
         blank=True,
         null=True,
         help_text="Optionally, enter the Facebook URL of the author.",
     )
     instagram_url = models.URLField(
-        'Instagram URL',
+        "Instagram URL",
         blank=True,
         null=True,
         help_text=" Optionally, enter the Instagram URL of the author.",

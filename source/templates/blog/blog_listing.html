@@ -2,11 +2,18 @@
 
 {% load wagtailcore_tags navigation_tags wagtailimages_tags %} 
 
-{% if tag %}
 
-    {% block title %}
-        {% if self.seo_title %}{{self.seo_title}}{% else %}{{self.title}}{% endif %}: {{tag}}
-    {% endblock title %}
+{% block title %}
+{% if self.seo_title %}{{self.seo_title}}{% else %}{{self.title}}{% endif %}
+
+{% if tag %}
+{{tag}}
+{% endif %}
+
+{% endblock title %}
+
+
+{% if tag %}
 
     {% block search_description %}Viewing all articles sorted by the tag {{tag}}{% endblock search_description %}
 {% endif %}
@@ -14,8 +21,10 @@
 
 {% block content %}
 
+
 <!-- ======= Blog Section ======= -->
 <section id="blog" class="blog">
+  {% if posts %}
 
     {% if tag %}
     <div class="section-title">
@@ -60,6 +69,24 @@
       <!-- End blog sidebar -->
     </div>
   </div>
+
+  {% else %}
+{# If there are no posts #}
+<div class="section-title">
+  <h2>{{page.introduction}}</h2>
+  <h3>
+    <span>
+        {% comment %}  {% endcomment %}
+    </span>
+    </h3>
+    <p>There are no entries yet. Come back later</p>
+</div>
+
+  {% endif %}
+
 </section>
 <!-- End Blog Section -->
+
+
+
 {% endblock content %}

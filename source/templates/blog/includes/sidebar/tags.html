@@ -1,7 +1,7 @@
 <h3 class="sidebar-title">Tags</h3>
 <div class="sidebar-item tags">
   <ul>
-    {% for tag in tags %}
+    {% for tag in all_tags %}
     <li><a Filter by tag name {{tag}} href="{{tag.url}}">{{tag}}</a></li>
     {% endfor %}
   </ul>

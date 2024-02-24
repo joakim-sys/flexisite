@@ -120,18 +120,18 @@ def get_footer_subscribe_email_title(context):
 
 
 @register.inclusion_tag(
-    "base/include/footer_subscribe_email_subtitle.txt", takes_context=True
+    "base/include/footer_subscribe_email_body.txt", takes_context=True
 )
-def get_footer_subscribe_email_subtitle(context):
-    footer_subscribe_email_title = context.get("footer_subscribe_email_subtitle", "")
-    if not footer_subscribe_email_title:
+def get_footer_subscribe_email_body(context):
+    footer_subscribe_email_body = context.get("footer_subscribe_email_body", "")
+    if not footer_subscribe_email_body:
         instance = FooterInfo.objects.first()
-        footer_subscribe_email_subtitle = (
-            instance.subscribe_email_subtitle
+        footer_subscribe_email_body = (
+            instance.subscribe_email_body
             if instance
             else "Stay updated on the exlusive list of events that unfold"
         )
-    return {"footer_subscribe_email_subtitle": footer_subscribe_email_subtitle}
+    return {"footer_subscribe_email_body": footer_subscribe_email_body}
 
 
 @register.inclusion_tag("base/include/footer_links.html", takes_context=True)

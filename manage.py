@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import os
 import sys
-import dotenv
+# import dotenv
 
 if __name__ == "__main__":
-    dotenv.load_dotenv()
+    # dotenv.load_dotenv()
     
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "source.settings.dev")
 
