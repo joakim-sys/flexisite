@@ -6,7 +6,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-c!7+$0(%4zaob^y+!8=vcgpl*0$cd4+d&@x27_gn#h%*c+#%&4"
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY',"django-insecure-c!7+$0(%4zaob^y+!8=vcgpl*0$cd4+d&@x27_gn#h%*c+#%&4")
 
 DEVELOPMENT_MODE = int(os.environ.get("DEVELOPMENT_MODE", "1"))
 
