@@ -1,22 +1,15 @@
-from .base import *
-import os
+from .base import *  # noqa: F403, F401
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # WAGTAILADMIN_BASE_URL required for notification emails
 WAGTAILADMIN_BASE_URL = "http://localhost:8000"
 
-
-# SECURITY WARNING: define the correct hosts in production!
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
-
-
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
+ALLOWED_HOSTS = ["*"]
 
 try:
-    from .local import *
+    from .local import *  # noqa
 except ImportError:
     pass

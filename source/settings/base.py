@@ -6,7 +6,9 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY',"django-insecure-c!7+$0(%4zaob^y+!8=vcgpl*0$cd4+d&@x27_gn#h%*c+#%&4")
+SECRET_KEY = "django-insecure-c!7+$0(%4zaob^y+!8=vcgpl*0$cd4+d&@x27_gn#h%*c+#%&4"
+
+DEBUG = True
 
 DEVELOPMENT_MODE = int(os.environ.get("DEVELOPMENT_MODE", "1"))
 
@@ -18,27 +20,9 @@ INSTALLED_APPS = [
     "services",
     "base",
     "blog",
-
-    'crispy_forms',
-    'crispy_bootstrap5',
-
-    "wagtail.api.v2",
-    "wagtail.locales",
-    "wagtail.contrib.routable_page",
-    "wagtail.contrib.table_block",
-    "wagtail.contrib.search_promotions",
-    "wagtail.contrib.settings",
-    "wagtail.contrib.simple_translation",
-    "wagtail.contrib.styleguide",
-    "rest_framework",
-    "wagtailfontawesomesvg",
-    "debug_toolbar",
-    "django_extensions",
-    "django.contrib.sitemaps",
     "home",
-    "search",
-    "wagtail.contrib.forms",
-    "wagtail.contrib.redirects",
+    "crispy_forms",
+    "crispy_bootstrap5",
     "wagtail.embeds",
     "wagtail.sites",
     "wagtail.users",
@@ -47,29 +31,46 @@ INSTALLED_APPS = [
     "wagtail.images",
     "wagtail.search",
     "wagtail.admin",
+    "wagtail.api.v2",
+    "wagtail.locales",
+    "wagtail.contrib.forms",
+    "wagtail.contrib.redirects",
+    "wagtail.contrib.routable_page",
+    "wagtail.contrib.table_block",
+    "wagtail.contrib.typed_table_block",
+    "wagtail.contrib.search_promotions",
+    "wagtail.contrib.settings",
+    "wagtail.contrib.simple_translation",
+    "wagtail.contrib.styleguide",
     "wagtail",
+    "rest_framework",
     "modelcluster",
     "taggit",
+    "wagtailfontawesomesvg",
+    "debug_toolbar",
+    "django_extensions",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sitemaps",
 ]
 
 MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django.middleware.security.SecurityMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 ROOT_URLCONF = "source.urls"
 
 TEMPLATES = [
@@ -166,10 +167,6 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, "static"),
 ]
 
-# ManifestStaticFilesStorage is recommended in production, to prevent outdated
-# JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
-# See https://docs.djangoproject.com/en/4.2/ref/contrib/staticfiles/#manifeststaticfilesstorage
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
@@ -180,13 +177,15 @@ MEDIA_URL = "/media/"
 
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = os.environ.get('WAGTAIL_SITE_NAME','flexisite')
+WAGTAIL_SITE_NAME = os.environ.get("WAGTAIL_SITE_NAME", "flexisite")
 
 # Search
 # https://docs.wagtail.org/en/stable/topics/search/backends.html
 WAGTAILSEARCH_BACKENDS = {
-    "default": {"BACKEND": "wagtail.search.backends.database", "INDEX": "striker"}
+    "default": {"BACKEND": "wagtail.search.backends.database", "INDEX": "flexisite"}
 }
+
+WAGTAIL_SITE_NAME = "flexisite"
 
 WAGTAIL_I18N_ENABLED = True
 
@@ -195,6 +194,28 @@ WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
     ("de", "Deutsch"),
     ("ar", "العربيّة"),
 ]
+
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "changeme")
+
+if "CSP_DEFAULT_SRC" in os.environ:
+    MIDDLEWARE.append("csp.middleware.CSPMiddleware")
+    CSP_REPORT_ONLY = True
+    CSP_DEFAULT_SRC = os.environ.get("CSP_DEFAULT_SRC").split(",")
+    if "CSP_SCRIPT_SRC" in os.environ:
+        CSP_SCRIPT_SRC = os.environ.get("CSP_SCRIPT_SRC").split(",")
+    if "CSP_STYLE_SRC" in os.environ:
+        CSP_STYLE_SRC = os.environ.get("CSP_STYLE_SRC").split(",")
+    if "CSP_IMG_SRC" in os.environ:
+        CSP_IMG_SRC = os.environ.get("CSP_IMG_SRC").split(",")
+    if "CSP_CONNECT_SRC" in os.environ:
+        CSP_CONNECT_SRC = os.environ.get("CSP_CONNECT_SRC").split(",")
+    if "CSP_FONT_SRC" in os.environ:
+        CSP_FONT_SRC = os.environ.get("CSP_FONT_SRC").split(",")
+    if "CSP_BASE_URI" in os.environ:
+        CSP_BASE_URI = os.environ.get("CSP_BASE_URI").split(",")
+    if "CSP_OBJECT_SRC" in os.environ:
+        CSP_OBJECT_SRC = os.environ.get("CSP_OBJECT_SRC").split(",")
+
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -210,7 +231,6 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"  # new
 # INTERNAL_IPS = [
 #     "127.0.0.1",
 # ]
-
 
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
