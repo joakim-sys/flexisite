@@ -235,3 +235,7 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"  # new
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+# X_FRAME_OPTIONS = 'SAMEORIGIN'
+X_FRAME_OPTIONS = 'ALLOWALL'
